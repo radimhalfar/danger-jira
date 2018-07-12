@@ -48,9 +48,9 @@ module Danger
       if search_title
         jira_issues << gitlab.mr_title.scan(regexp)
       end
-      if search_commits
-        jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
-      end
+#       if search_commits
+#         jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
+#       end
 
       jira_issues.flatten.uniq
 
