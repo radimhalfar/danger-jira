@@ -46,7 +46,7 @@ module Danger
       jira_issues = []
 
       if search_title
-        jira_issues << github.pr_title.scan(regexp)
+        jira_issues << gitlab.mr_title.scan(regexp)
       end
       if search_commits
         jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
@@ -55,7 +55,7 @@ module Danger
       jira_issues.flatten.uniq
 
       if jira_issues.empty?
-        github.pr_body.gsub(regexp) do |match|
+        gitlab.mr_body.gsub(regexp) do |match|
           jira_issues << match
         end
       end
