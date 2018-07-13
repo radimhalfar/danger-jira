@@ -1,16 +1,23 @@
 # danger-jira
 
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](LICENSE.txt)
-[![Gem](https://img.shields.io/gem/v/danger-jira.svg?style=flat)](https://rubygems.org/gems/danger-jira)
 
 A [Danger](https://github.com/danger/danger) plugin for that links JIRA issues to pull requests. Inspired by [danger-plugin-jira-issue](https://github.com/macklinu/danger-plugin-jira-issue)
+
+This Danger-Jira plugin works with gitlab and gitlab CI.
 
 ## Installation
 
 Add this line to your Gemfile:
 
 ```rb
-gem 'danger-jira'
+gem 'danger-jira', :git => https://github.com/radimhalfar/danger-jira
+```
+
+or install it directly using 
+```sh
+$ gem install specific_install
+$ gem specific_install https://github.com/radimhalfar/danger-jira
 ```
 
 ## Usage
