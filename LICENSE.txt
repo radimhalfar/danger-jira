@@ -1,4 +1,4 @@
-Copyright (c) 2017 Louie Penaflor <lpenaflor@abodo.com>
+Copyright (c) 2018 INLOOPX
 
 MIT License
 

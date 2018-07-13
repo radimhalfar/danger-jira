@@ -1,3 +1,5 @@
+require 'set'
+
 module Danger
   # Links JIRA issues to a pull request.
   #
@@ -39,9 +41,15 @@ module Danger
       throw Error("'url' missing - must supply JIRA installation URL") if url.nil?
 
       # Support multiple JIRA projects
-      keys = key.kind_of?(Array) ? key.join("|") : key
-      jira_key_regex_string = "((?:#{keys})-[0-9]+)"
-      regexp = Regexp.new(/#{jira_key_regex_string}/)
+      keys = nil
+      if key.kind_of?(Array)
+          keys = key.map { |key| "(?:"+ key + ")" }.join("|")
+      else
+          keys = "(#{key})"
+      end
+
+      jira_key_regex_string = /(?:\[((?:#{keys})-[0-9]+)\])/
+      regexp = Regexp.new("#{jira_key_regex_string}")
 
       jira_issues = []
 
@@ -51,14 +59,10 @@ module Danger
       if search_commits
         jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
       end
+      jira_mr_issues = jira_issues[0].map {|item| item[0]}.to_set.to_a
+      jira_commit_issues = jira_issues[1].map {|item| item[0]}.to_set.to_a
 
-      jira_issues.flatten.uniq
-
-      if jira_issues.empty?
-        gitlab.mr_body.gsub(regexp) do |match|
-          jira_issues << match
-        end
-      end
+      jira_issues = jira_mr_issues + jira_commit_issues
 
       if !jira_issues.empty?
         jira_urls = jira_issues.map { |issue| link(href: ensure_url_ends_with_slash(url), issue: issue) }.join(", ")
