@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['penaflor@gmail.com']
   spec.description   = %q{A Danger plugin to link JIRA issues to a pull request.}
   spec.summary       = %q{A Danger plugin to link JIRA issues to a pull request.}
-  spec.homepage      = 'https://github.com/radimhalfar/danger-jira/'
+  spec.homepage      = 'https://github.com/radimhalfar/danger-jira'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
