@@ -57,7 +57,7 @@ module Danger
         jira_issues << gitlab.mr_title.scan(regexp)
       end
       if search_commits
-        jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
+        jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.flatten.compact
       end
       
       has_issues = !jira_issues[0].empty? || !jira_issues[1].empty?
