@@ -59,12 +59,14 @@ module Danger
       if search_commits
         jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.compact
       end
+      
+      has_issues = !jira_issues[0].empty? && !jira_issues[1].empty?
       jira_mr_issues = jira_issues[0].map {|item| item[0]}.to_set.to_a
       jira_commit_issues = jira_issues[1].map {|item| item[0]}.to_set.to_a
 
       jira_issues = jira_mr_issues + jira_commit_issues
 
-      if !jira_issues.empty?
+      if !jira_issues.empty? && has_issues
         jira_urls = jira_issues.map { |issue| link(href: ensure_url_ends_with_slash(url), issue: issue) }.join(", ")
         message("#{emoji} #{jira_urls}")
       elsif report_missing
