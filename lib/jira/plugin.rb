@@ -45,16 +45,16 @@ module Danger
       if key.kind_of?(Array)
           keys = key.map { |key| "(?:"+ key + ")" }.join("|")
       else
-          keys = "(#{key})"
+          keys = "(?:#{key})"
       end
 
-      jira_key_regex_string = /(?:\[((?:#{keys})-[0-9]+)\])/
+      jira_key_regex_string = /(#{keys}-[0-9]+)/
       regexp = Regexp.new("#{jira_key_regex_string}")
 
       jira_issues = []
 
       if search_title
-        jira_issues << gitlab.mr_title.scan(regexp)
+        jira_issues << gitlab.mr_title.scan(regexp).flatten.compact
       end
       if search_commits
         jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.flatten.compact
