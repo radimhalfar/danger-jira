@@ -51,22 +51,20 @@ module Danger
       jira_key_regex_string = /(#{keys}-[0-9]+)/
       regexp = Regexp.new("#{jira_key_regex_string}")
 
-      jira_issues = []
+      jira_mr_issues = []
+      jira_commit_issues = []
 
       if search_title
-        jira_issues << gitlab.mr_title.scan(regexp).flatten.compact
+        jira_mr_issues = gitlab.mr_title.scan(regexp).flatten.compact.to_set.to_a
       end
       if search_commits
-        jira_issues << git.commits.map { |commit| commit.message.scan(regexp) }.flatten.compact
+        jira_commit_issues = git.commits.map { |commit| commit.message.scan(regexp) }.flatten.compact.to_set.to_a
       end
       
-      has_issues = !jira_issues[0].empty? || !jira_issues[1].empty?
-      jira_mr_issues = jira_issues[0].map {|item| item[0]}.to_set.to_a
-      jira_commit_issues = jira_issues[1].map {|item| item[0]}.to_set.to_a
-
       jira_issues = jira_mr_issues + jira_commit_issues
+      jira_issues = jira_issues.to_set.to_a
 
-      if !jira_issues.empty? && has_issues
+      if !jira_issues.empty?
         jira_urls = jira_issues.map { |issue| link(href: ensure_url_ends_with_slash(url), issue: issue) }.join(", ")
         message("#{emoji} #{jira_urls}")
       elsif report_missing
