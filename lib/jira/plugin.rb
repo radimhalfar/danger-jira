@@ -47,9 +47,8 @@ module Danger
       else
           keys = "(?:#{key})"
       end
-
-      jira_key_regex_string = /(#{keys}-[0-9]+)/
-      regexp = Regexp.new("#{jira_key_regex_string}")
+      
+      regexp = /((?:#{keys})-[0-9]+)/
 
       jira_mr_issues = []
       jira_commit_issues = []
